@@ -8,8 +8,8 @@ steps:
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
 
    Write-Host $Config
-
-   if ($(LicenseFile) -ne $null)
+   $temp = $(LicenseFile)
+   if ($temp -ne $null)
    {
      $Config | Init-ALEnvironment -Build $True -Password $(UserPwd) -LicenseFile $(LicenseFile)
    }

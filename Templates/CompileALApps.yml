@@ -9,6 +9,7 @@ steps:
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
+   Write-Host $Config
    if ($CertPath) {
      Install-NAVSipCryptoProviderFromNavContainer -containerName $Config.ContainerName
    }

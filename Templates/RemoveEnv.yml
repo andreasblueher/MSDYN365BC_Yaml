@@ -6,7 +6,13 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
    $Config = Read-ALConfiguration -Path .\
    $Config | Remove-ALEnvironment
-    
+
+   if("$(CertSecret)")
+   {
+    Remove-Item "$(CertFile)" -Force -ErrorAction Stop
+    Write-Host "Removed certfile from temp folder."
+   }
+
 
   displayName: 'Remove environment'
   condition: always()

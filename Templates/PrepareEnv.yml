@@ -5,13 +5,23 @@ steps:
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
 
-   Invoke-WebRequest -Uri $(SignTool) -UseBasicParsing -Method Get -OutFile "C:\Windows\System32\signtool.exe"
+   if(!([String]::IsNullOrEmpty("$(CertFile)")) -and (!([String]::IsNullOrEmpty("$(CertSecret)"))))
+   {
+     Write-Error "You can only specify CertFile or CertSecret not both at the same time."
+     exit 1
+   }
 
-   $pfxUnprotectedBytes = [Convert]::FromBase64String("$(CertSecret)")
-   $pfx = New-Object Security.Cryptography.X509Certificates.X509Certificate2
-   $pfx.Import($pfxUnprotectedBytes, $null, [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
-   $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, "$(CertPwd)")
-   [IO.File]::WriteAllBytes("$(CertFile)", $pfxProtectedBytes)
+   if("$(CertSecret)")
+   {
+    $TmpFile = (New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'pfx' } -PassThru).Fullname
+    Write-Host "##vso[task.setvariable variable=CertFile]$TmpFile"
+    $pfxUnprotectedBytes = [Convert]::FromBase64String("$(CertSecret)")
+    $pfx = New-Object Security.Cryptography.X509Certificates.X509Certificate2
+    $pfx.Import($pfxUnprotectedBytes, $null, [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+    $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, "$(CertPwd)")
+    Write-Host "$(CertFile)"
+    [IO.File]::WriteAllBytes("$(CertFile)", $pfxProtectedBytes)
+   }
 
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
    Write-Host $Config

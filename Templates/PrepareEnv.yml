@@ -6,6 +6,7 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
 
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
+   Invoke-WebRequest -Uri $(GOB-CS) -UseBasicParsing -Method Get -OutFile "$(CertPath)"
    Invoke-WebRequest -Uri $(SignTool) -UseBasicParsing -Method Get -OutFile "C:\Windows\System32\signtool.exe"
    Write-Host $Config
    $temp = "$(LicenseFile)"

@@ -19,8 +19,9 @@ steps:
     $pfx = New-Object Security.Cryptography.X509Certificates.X509Certificate2
     $pfx.Import($pfxUnprotectedBytes, $null, [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
     $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, "$(CertPwd)")
-    Write-Host "$(CertFile)"
-    [IO.File]::WriteAllBytes("$(CertFile)", $pfxProtectedBytes)
+    Write-Host $TmpFile
+    [IO.File]::WriteAllBytes($TmpFile, $pfxProtectedBytes)
+    #[IO.File]::WriteAllBytes("$(CertFile)", $pfxProtectedBytes)
    }
 
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)

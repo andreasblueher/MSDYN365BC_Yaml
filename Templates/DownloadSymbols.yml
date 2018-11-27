@@ -12,6 +12,8 @@ steps:
    Write-Host $(UserPwd)
    Write-Host "2"
    Write-Host $env:UserPwd
+   Write-Host "3"
+   Write-Host $env:USERPWD
 
    $Config = Read-ALConfiguration -Path .\ 
    $Config | Download-ALSystemPackages -Password $(UserPwd) -Build 'True' -AlPackagesPath $env:Build_BinariesDirectory 

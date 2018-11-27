@@ -6,6 +6,7 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
 
    $Config = Read-ALConfiguration -Path .\ 
+   Write-Host $Config
    $Config | Download-ALSystemPackages -Password $(UserPwd) -Build 'True' -AlPackagesPath $env:Build_BinariesDirectory 
 
   displayName: 'Download system symbols'

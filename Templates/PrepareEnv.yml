@@ -7,11 +7,11 @@ steps:
 
    Invoke-WebRequest -Uri $(SignTool) -UseBasicParsing -Method Get -OutFile "C:\Windows\System32\signtool.exe"
 
-   $pfxUnprotectedBytes = [Convert]::FromBase64String($(CertSecret))
+   $pfxUnprotectedBytes = [Convert]::FromBase64String("$(CertSecret)")
    $pfx = New-Object Security.Cryptography.X509Certificates.X509Certificate2
    $pfx.Import($pfxUnprotectedBytes, $null, [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
-   $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, $(CertPwd))
-   [IO.File]::WriteAllBytes($(CertFile), $pfxProtectedBytes)
+   $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, "$(CertPwd)")
+   [IO.File]::WriteAllBytes("$(CertFile)", $pfxProtectedBytes)
 
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
    Write-Host $Config

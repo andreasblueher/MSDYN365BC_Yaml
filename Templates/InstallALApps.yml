@@ -6,8 +6,9 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
    $Config = Read-ALConfiguration -Path .\
    $Config | UnPublish-ALAppTree -OrderedApps (Get-ALAppOrder)
+   $CertSecret = "$(CertSecret)"
    $CertFile = "$(CertFile)"
-   if ($CertFile) {
+   if ($CertSecret) {
    $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder) -PackagesPath $env:Build_ArtifactStagingDirectory
    } else {
    $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder) -PackagesPath $env:Build_ArtifactStagingDirectory -SkipVerification 'true'

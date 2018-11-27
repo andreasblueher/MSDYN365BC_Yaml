@@ -6,9 +6,10 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
    Write-Host $Config
-   $CertFile = "$(CertPath)"
+   $CertSecret = "$(CertSecret)"
+   $CertFile = "$(CertFile)"
    $CertPwd = "$(CertPwd)"
-   if ($CertFile) {
+   if ($CertSecret) {
      Install-NAVSipCryptoProviderFromNavContainer -containerName $Config.ContainerName
    }
    $Config | Compile-ALProjectTree -OrderedApps (Get-ALAppOrder) -PackagesPath $Config.RepoPath -CertPwd $CertPwd -CertPath $CertFile

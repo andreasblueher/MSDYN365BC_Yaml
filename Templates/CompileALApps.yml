@@ -3,7 +3,6 @@
 parameters:
   CertPath: ''
   CertPwd: ''
-#  pwd: 'pass@word1'
 
 steps:
 - powershell: |
@@ -21,4 +20,3 @@ steps:
   env:
     CertPath: ${{ parameters.CertPath }}
     CertPwd: ${{ parameters.CertPwd }}
-#    USER_PWD: ${{ parameters.pwd }}

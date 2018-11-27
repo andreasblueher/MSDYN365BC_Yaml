@@ -1,24 +1,19 @@
 # File: PrepareEnv.yml
 
-#parameters:
-#  pwd: 'pass@word1'
-
 steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
 
-   Write-Host "1"
-   Write-Host $(LicenseFile)
-   Write-Host "2"
-   Write-Host $env:LicenseFile
-   Write-Host "3"
-   Write-Host $env:LICENSEFILE
-
-   $Config = Read-ALConfiguration -Path .\ -Password $env:UserPwd
-   $Config | Init-ALEnvironment -Build $True -Password $env:UserPwd -LicenseFile $env:LicenseFile
+   $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
+   if ($(LicenseFile) -ne $null)
+   {
+     $Config | Init-ALEnvironment -Build $True -Password $(UserPwd) -LicenseFile $(LicenseFile)
+   }
+   else
+   {
+     $Config | Init-ALEnvironment -Build $True -Password $(UserPwd)
+   }
 
   failOnStderr: true
   displayName: 'Prepare environment'
-#  env:
-#    USER_PWD: ${{ parameters.pwd }}

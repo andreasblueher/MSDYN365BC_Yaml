@@ -8,7 +8,7 @@ steps:
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
    $Config = Read-ALConfiguration -Path .\ 
-   $Config | Download-ALSystemPackages -Password $env:UserPwd -Build 'True' -AlPackagesPath $env:Build_BinariesDirectory 
+   $Config | Download-ALSystemPackages -Password $(UserPwd) -Build 'True' -AlPackagesPath $env:Build_BinariesDirectory 
     
 
   displayName: 'Download system symbols'

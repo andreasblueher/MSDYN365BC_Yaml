@@ -7,10 +7,6 @@ steps:
    $Config = Read-ALConfiguration -Path .\ -Password $(UserPwd)
    Write-Host $Config
 
-   if ("($CertFile)") {
-     Install-NAVSipCryptoProviderFromNavContainer -containerName $Config.ContainerName
-   }
-
    $Config | Compile-ALProjectTree -OrderedApps (Get-ALAppOrder) -PackagesPath $Config.RepoPath -CertPwd "$(CertPwd)" -CertPath "$(CertFile)"
    copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($Config.AppName)_*.app"
    copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($Config.TestAppName)_*.app"

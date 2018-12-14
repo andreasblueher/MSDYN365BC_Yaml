@@ -37,9 +37,9 @@ steps:
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "LicenseFile" -Value $env:LicenseFile
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertFile" -Value $TmpFile
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertPwd" -Value $env:CertPwd
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Username" -Values $env:Username
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Password" -Values $env:UserPwd
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Auth" -Values $env:Auth
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Username" -Value $env:Username
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Password" -Value $env:UserPwd
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Auth" -Value $env:Auth
    Write-Host $Configuration
 
    $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigPath,"\config.json")) -Force

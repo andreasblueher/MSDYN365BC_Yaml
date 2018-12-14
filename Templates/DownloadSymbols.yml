@@ -7,10 +7,10 @@ steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
-   $Config = Read-ALConfiguration -Path .\ 
-   $Config | Download-ALSystemPackages -Password $env:USER_PWD -Build 'True' -AlPackagesPath $env:Build_BinariesDirectory
-    
+
+   $Config = Read-ALConfiguration -Path .\
+   $Config | Download-ALSystemPackages -Password $env:UserPwd -Build 'True' -AlPackagesPath $env:Build_BinariesDirectory
 
   displayName: 'Download system symbols'
   env:
-    USER_PWD: ${{ parameters.pwd }}
+    UserPwd: ${{ parameters.pwd }}

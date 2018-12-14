@@ -9,12 +9,11 @@ steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
-   $Config = Read-ALConfiguration -Path .\ 
-   $Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $env:USER_PWD
+   $Config = Read-ALConfiguration -Path .\
+   $Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $env:UserPwd
 
   displayName: 'Run Tests'
   env:
     TrxFile: ${{ parameters.TrxFile }}
     TestCodeunitId: ${{ parameters.TestCodeunitId }}
-    USER_PWD: ${{ parameters.pwd }}
-
+    UserPwd: ${{ parameters.pwd }}

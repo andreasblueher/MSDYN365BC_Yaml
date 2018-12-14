@@ -2,16 +2,66 @@
 
 parameters:
   pwd: 'pass@word1'
+  CertFile: ''
+  CertSecret: ''
+  CertPwd: ''
+  LicenseFile: ''
 
 steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
 
-   $Config = Read-ALConfiguration -Path .\ -Password $env:USER_PWD
-   $Config | Init-ALEnvironment -Build $True -Password $env:USER_PWD
+   if(!([String]::IsNullOrEmpty($env:CertFile)) -and (!([String]::IsNullOrEmpty($env:CertSecret))))
+   {
+     Write-Error "You can only specify CertFile or CertSecret not both at the same time."
+     exit 1
+   }
+
+   if($env:CertSecret)
+   {
+    $TmpFile = (New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'pfx' } -PassThru).Fullname
+    Write-Host "##vso[task.setvariable variable=CertFile]$TmpFile"
+    $pfxUnprotectedBytes = [Convert]::FromBase64String($env:CertSecret)
+    $pfx = New-Object Security.Cryptography.X509Certificates.X509Certificate2
+    $pfx.Import($pfxUnprotectedBytes, $null, [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+    $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, $env:CertPwd)
+    Write-Host $TmpFile
+    [IO.File]::WriteAllBytes($TmpFile, $pfxProtectedBytes)
+   }
+   $VsixPath = "C:\ProgramData\NVR\Extensions\$env:ContainerName\vsix"
+
+   if (-not (Test-Path -PathType Container $vsixpath))
+   {
+    mkdir $vsixpath | out-null
+   }
+
+   #create object from app.json to get name
+   $AppJSON = Get-Content -Raw -Path (Join-Path $PSSCriptRoot '..\\MainApp\\app.json') | ConvertFrom-Json
+   $TestAppJSON = Get-Content -Raw -Path (Join-Path $PSSCriptRoot '..\\TestApp\\app.json') | ConvertFrom-Json
+   #get name of last compiled Ext.app package
+
+   $AppFile = (Get-ChildItem -Path (Join-Path $PSSCriptRoot '..\\MainApp') -Filter '*.app' | Sort-Object LastWriteTime -Descending | Select-Object -First 1).Fullname
+   $TestAppFile = (Get-ChildItem -Path (Join-Path $PSSCriptRoot '..\\TestApp') -Filter '*.app' | Sort-Object LastWriteTime -Descending | Select-Object -First 1).Fullname
+   $RepoPath = (Join-Path $PSSCriptRoot '..')
+   $AppPath = (Join-Path $PSSCriptRoot '..\MainApp')
+   $TestAppPath = (Join-Path $PSSCriptRoot '..\TestApp')
+
+   $Config = Read-ALConfiguration -Path .\ -Password $env:UserPwd
+   if ($temp -ne $null)
+   {
+     $Config | Init-ALEnvironment -Build $True -Password $env:UserPwd -LicenseFile $env:LicenseFile
+   }
+   else
+   {
+     $Config | Init-ALEnvironment -Build $True -Password $env:UserPwd
+   }
 
   failOnStderr: true
   displayName: 'Prepare environment'
   env:
-    USER_PWD: ${{ parameters.pwd }}
+    UserPwd: ${{ parameters.pwd }}
+    CertFile: ${{ parameters.CertFile }}
+    CertSecret: ${{ parameters.CertSecret }}
+    CertPwd: ${{ parameters.CertPwd }}
+    LicenseFile: ${{ parameters.LicenseFile }}

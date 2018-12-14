@@ -1,12 +1,25 @@
 # File: RemoveEnv.yml
 
+parameters:
+  CertFile: ''
+  CertSecret: ''
+
 steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
    $Config = Read-ALConfiguration -Path .\
    $Config | Remove-ALEnvironment
-    
+
+   if($env:CertSecret)
+   {
+    Remove-Item $env:CertPath -Force -ErrorAction Stop
+    Write-Host "Removed certfile from temp folder."
+   }
 
   displayName: 'Remove environment'
+  env:
+    CertPath: ${{ parameters.CertFile }}
+    CertSecret: ${{ parameters.CertSecret }}
+
   condition: always()

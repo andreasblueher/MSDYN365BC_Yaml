@@ -1,8 +1,8 @@
 # File: .vsts-ci.yml
-# 
+#
 # Author: Kamil (Kine) Sacek
 #
-# To use, place this file into root of your git repository and push to the Azure DevOps repository. 
+# To use, place this file into root of your git repository and push to the Azure DevOps repository.
 # Build pipeline will be created automagically and will build your app.
 #
 # Prerequisities:
@@ -29,11 +29,14 @@ resources:
       submodules: true
 
 variables:
-  TestCodeunitId: 130402
-  #UserPwd: $(USER.PASSWORD)
-  UserPwd: 'pass@word1'
-  CertFile: 'c:\Cert\CodeSigning.pfx'
+  UserPwd: ''
+  TestCodeunitId: ''
+  LicenseFile: ''
+  CertSecret: ''
+  CertFile: ''
   CertPwd: ''
+  ImageName: 'microsoft/bcsandbox'
+  Containername: 'BC'
 
 queue:
   name: default
@@ -51,6 +54,10 @@ steps:
 - template: Templates/PrepareEnv.yml@MSDYN365BC_Yaml
   parameters:
     pwd: $(UserPwd)
+    CertFile: $(CertFile)
+    CertSecret: $(CertSecret)
+    CertPwd: $(CertPwd)
+    LicenseFile: $(LicenseFile)
 
 - template: Templates/DownloadSymbols.yml@MSDYN365BC_Yaml
   parameters:
@@ -60,6 +67,7 @@ steps:
   parameters:
     CertPath: $(CertFile)
     CertPwd: $(CertPwd)
+    pwd: $(UserPwd)
 
 - template: Templates/InstallALApps.yml@MSDYN365BC_Yaml
   parameters:

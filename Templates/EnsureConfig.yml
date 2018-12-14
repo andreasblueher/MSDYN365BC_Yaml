@@ -40,6 +40,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Username" -Value $env:Username
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Password" -Value $env:UserPwd
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Auth" -Value $env:Auth
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "RepoPath" -Value (Join-Path $PSSCriptRoot '..')
    #Switch true for automatic Build in Azure DevOps and false for interactive build
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 

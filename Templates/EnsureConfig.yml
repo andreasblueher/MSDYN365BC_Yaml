@@ -5,7 +5,7 @@ parameters:
   CertFile: ''
   CertPwd: ''
   CertSecret: ''
-  ConfigPath: $($env:AGENT_BUILDDIRECTORY)
+  ConfigFolder: $($env:AGENT_BUILDDIRECTORY)
   ContainerName: 'BC'
   ImageName: 'microsoft/bcsandbox'
   LicenseFile: ''
@@ -15,7 +15,7 @@ steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
-   Write-Host $env:ConfigPath
+   Write-Host $env:ConfigFolder
    if(!([String]::IsNullOrEmpty($env:CertFile)) -and (!([String]::IsNullOrEmpty($env:CertSecret))))
    {
      Write-Error "You can only specify CertFile or CertSecret not both at the same time."
@@ -42,7 +42,7 @@ steps:
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Auth" -Value $env:Auth
    Write-Host $Configuration
 
-   $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigPath,"\config.json")) -Force
+   $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigFolder,"\config.json")) -Force
 
   displayName: 'Ensure AL Config'
   env:
@@ -50,7 +50,7 @@ steps:
     CertFile: ${{ parameters.CertFile }}
     CertPwd: ${{ parameters.CertPwd }}
     CertSecret: ${{ parameters.CertSecret }}
-    ConfigPath: ${{ parameters.ConfigPath }}
+    ConfigFolder: ${{ parameters.ConfigFolder }}
     ContainerName: ${{ parameters.ContainerName }}
     ImageName: ${{ parameters.ImageName }}
     LicenseFile: ${{ parameters.LicenseFile }}

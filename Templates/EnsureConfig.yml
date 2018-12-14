@@ -16,7 +16,6 @@ steps:
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
 
-   Write-Host $env:ConfigFolder
    if(!([String]::IsNullOrEmpty($env:CertFile)) -and (!([String]::IsNullOrEmpty($env:CertSecret))))
    {
      Write-Error "You can only specify CertFile or CertSecret not both at the same time."

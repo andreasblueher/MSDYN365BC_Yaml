@@ -1,7 +1,8 @@
 # File: PrepareEnv.yml
 
 parameters:
-  pwd: 'pass@word1'
+  ConfigPath: $($env:AGENT_BUILDDIRECTORY)
+  UserPwd: ''
 
 steps:
 - powershell: |
@@ -14,4 +15,4 @@ steps:
   failOnStderr: true
   displayName: 'Prepare environment'
   env:
-    USER_PWD: ${{ parameters.pwd }}
+    UserPwd: ${{ parameters.UserPwd }}

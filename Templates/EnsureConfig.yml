@@ -1,13 +1,15 @@
 # File: CompileALApps.yml
 
 parameters:
-  ImageName: 'microsoft/bcsandbox'
-  ContainerName: 'BC'
-  ConfigPath: $($env:AGENT_BUILDDIRECTORY)
-  LicenseFile: ''
-  CertSecret: ''
+  Auth: 'Windows'
   CertFile: ''
   CertPwd: ''
+  CertSecret: ''
+  ConfigPath: $($env:AGENT_BUILDDIRECTORY)
+  ContainerName: 'BC'
+  ImageName: 'microsoft/bcsandbox'
+  LicenseFile: ''
+  UserPwd: ''
 
 steps:
 - powershell: |
@@ -35,16 +37,21 @@ steps:
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "LicenseFile" -Value $env:LicenseFile
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertFile" -Value $TmpFile
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertPwd" -Value $env:CertPwd
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Username" -Values $env:Username
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Password" -Values $env:UserPwd
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Auth" -Values $env:Auth
    Write-Host $Configuration
 
    $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigPath,"\config.json")) -Force
 
   displayName: 'Ensure AL Config'
   env:
-    ImageName: ${{ parameters.ImageName }}
-    ContainerName: ${{ parameters.ContainerName }}
-    ConfigPath: ${{ parameters.ConfigPath }}
-    LicenseFile: ${{ parameters.LicenseFile }}
-    CertSecret: ${{ parameters.CertSecret }}
+    Auth: ${{ parameters.Auth }}
     CertFile: ${{ parameters.CertFile }}
     CertPwd: ${{ parameters.CertPwd }}
+    CertSecret: ${{ parameters.CertSecret }}
+    ConfigPath: ${{ parameters.ConfigPath }}
+    ContainerName: ${{ parameters.ContainerName }}
+    ImageName: ${{ parameters.ImageName }}
+    LicenseFile: ${{ parameters.LicenseFile }}
+    UserPwd: ${{ parameters.UserPwd }}

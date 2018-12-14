@@ -1,13 +1,13 @@
 # File: CompileALApps.yml
 
 parameters:
-  Auth: 'Windows'
+  Auth: ''
   CertFile: ''
   CertPwd: ''
   CertSecret: ''
-  ConfigFolder: $($env:AGENT_BUILDDIRECTORY)
-  ContainerName: 'BC'
-  ImageName: 'microsoft/bcsandbox'
+  ConfigFolder: ''
+  ContainerName: ''
+  ImageName: ''
   LicenseFile: ''
   UserPwd: ''
 
@@ -15,6 +15,7 @@ steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
+
    Write-Host $env:ConfigFolder
    if(!([String]::IsNullOrEmpty($env:CertFile)) -and (!([String]::IsNullOrEmpty($env:CertSecret))))
    {

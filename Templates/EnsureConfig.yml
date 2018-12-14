@@ -31,18 +31,18 @@ steps:
     [IO.File]::WriteAllBytes($TmpFile, $pfxProtectedBytes)
    }
 
-   $Configuration = New-Object -Typename psobject
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "ContainerName" -Value $env:ContainerName
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "ImageName" -Value $env:ImageName
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "LicenseFile" -Value $env:LicenseFile
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertFile" -Value $TmpFile
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertPwd" -Value $env:CertPwd
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Username" -Value $env:Username
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Password" -Value $env:UserPwd
-   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "Auth" -Value $env:Auth
-   Write-Host $Configuration
+   $Config = New-Object -Typename psobject
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "ContainerName" -Value $env:ContainerName
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "ImageName" -Value $env:ImageName
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "LicenseFile" -Value $env:LicenseFile
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "CertFile" -Value $TmpFile
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "CertPwd" -Value $env:CertPwd
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "Username" -Value $env:Username
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "Password" -Value $env:UserPwd
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "Auth" -Value $env:Auth
+   Write-Host $Config
 
-   $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigFolder,"\config.json")) -Force
+   $Config | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigFolder,"\config.json")) -Force
 
   displayName: 'Ensure AL Config'
   env:

@@ -1,7 +1,7 @@
 # File: PrepareEnv.yml
 
 parameters:
-  ConfigPath: $($env:AGENT_BUILDDIRECTORY)
+  ConfigFolder: $($env:AGENT_BUILDDIRECTORY)
   UserPwd: ''
 
 steps:
@@ -9,10 +9,12 @@ steps:
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
 
-   $Config = Read-ALConfiguration -Path .\ -Password $env:USER_PWD
-   $Config | Init-ALEnvironment -Build $True -Password $env:USER_PWD
+   $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
+   Write-Host $Config
+   #$Config | Init-ALEnvironment -Build $True -Password $env:USER_PWD
 
   failOnStderr: true
   displayName: 'Prepare environment'
   env:
+    ConfigFolder: ${{ parameters.ConfigFolder }}
     UserPwd: ${{ parameters.UserPwd }}

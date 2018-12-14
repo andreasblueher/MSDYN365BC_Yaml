@@ -48,7 +48,8 @@ steps:
 
    $Apps=@()
    $Appfiles = Get-ChildItem -Path .\ -Filter *.app -Recurse:$Recurse
-
+   Write-Host $AppFiles
+   Get-ChildItem
 
    foreach ($File in $Appfiles)
    {

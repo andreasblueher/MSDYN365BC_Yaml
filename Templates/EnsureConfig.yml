@@ -47,9 +47,9 @@ steps:
    #region TempCode
 
    $Apps=@()
-   $Appfiles = Get-ChildItem -Path .\ -Filter *.app -Recurse:$Recurse
+   $Appfiles = Get-ChildItem -Path .\ -Filter *.app -Recurse
    Write-Host $AppFiles
-   Get-ChildItem
+   Get-ChildItem -Filter *.app -Recurse
 
    foreach ($File in $Appfiles)
    {

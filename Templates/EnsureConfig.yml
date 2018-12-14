@@ -3,7 +3,7 @@
 parameters:
   ImageName: 'microsoft/bcsandbox'
   ContainerName: 'BC'
-  ConfigPath: $(AGENT_BUILDDIRECTORY)
+  ConfigPath: $($env:AGENT_BUILDDIRECTORY)
   LicenseFile: ''
   CertSecret: ''
   CertFile: ''
@@ -13,13 +13,12 @@ steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
-
+   Write-Host $env:ConfigPath
    if(!([String]::IsNullOrEmpty($env:CertFile)) -and (!([String]::IsNullOrEmpty($env:CertSecret))))
    {
      Write-Error "You can only specify CertFile or CertSecret not both at the same time."
      exit 1
    }
-   Write-Host "1"
    if($env:CertSecret)
    {
     $TmpFile = (New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'pfx' } -PassThru).Fullname
@@ -28,7 +27,6 @@ steps:
     $pfx.Import($pfxUnprotectedBytes, $null, [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
     $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, $env:CertPwd)
     [IO.File]::WriteAllBytes($TmpFile, $pfxProtectedBytes)
-    Write-Host "Done Cert"
    }
 
    $Configuration = New-Object -Typename psobject
@@ -39,12 +37,7 @@ steps:
    Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertPwd" -Value $env:CertPwd
    Write-Host $Configuration
 
-   Write-Host "2 " -NoNewLine
-   Write-Host  $($env:AGENT_BUILDDIRECTORY)
-   Write-Host "3 " -NoNewLine
-   Write-Host  $env:AGENT_BUILDDIRECTORY
-
-   $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:AGENT_BUILDDIRECTORY,"\config.json"))
+   $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigPath,"\config.json")) -Force
 
   displayName: 'Ensure AL Config'
   env:

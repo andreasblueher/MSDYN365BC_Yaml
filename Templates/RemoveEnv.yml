@@ -1,4 +1,5 @@
 # File: RemoveEnv.yml
+# TODO: Remove ConfigFile
 
 steps:
 - powershell: |
@@ -6,7 +7,7 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
    $Config = Read-ALConfiguration -Path .\
    $Config | Remove-ALEnvironment
-    
+
 
   displayName: 'Remove environment'
   condition: always()

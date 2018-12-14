@@ -1,0 +1,51 @@
+# File: CompileALApps.yml
+
+parameters:
+  ImageName: 'microsoft/bcsandbox'
+  ContainerName: 'BC'
+  ConfigPath: $(AGENT_BUILDDIRECTORY)
+  LicenseFile: ''
+  CertSecret: ''
+  CertFile: ''
+  CertPwd: ''
+
+steps:
+- powershell: |
+   Import-Module NVRAppDevOps -DisableNameChecking
+   Import-Module navcontainerhelper -DisableNameChecking
+
+   if(!([String]::IsNullOrEmpty($env:CertFile)) -and (!([String]::IsNullOrEmpty($env:CertSecret))))
+   {
+     Write-Error "You can only specify CertFile or CertSecret not both at the same time."
+     exit 1
+   }
+
+   if($env:CertSecret)
+   {
+    $TmpFile = (New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'pfx' } -PassThru).Fullname
+    $pfxUnprotectedBytes = [Convert]::FromBase64String($env:CertSecret)
+    $pfx = New-Object Security.Cryptography.X509Certificates.X509Certificate2
+    $pfx.Import($pfxUnprotectedBytes, $null, [Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+    $pfxProtectedBytes = $pfx.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, $env:CertPwd)
+    [IO.File]::WriteAllBytes($TmpFile, $pfxProtectedBytes)
+   }
+
+   $Configuration = New-Object -Typename psobject
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "ContainerName" -Value $env:ContainerName
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "ImageName" -Value $env:ImageName
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "LicenseFile" -Value $env:LicenseFile
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertFile" -Value $TmpFile
+   Add-Member -InputObject $Configuration -MemberType Noteproperty -Name "CertPwd" -Value $env:CertPwd
+
+   Write-Host $env:ConfigPath
+   $Configuration | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigPath,"\config.json"))
+
+  displayName: 'Ensure AL Config'
+  env:
+    ImageName: ${{ parameters.ImageName }}
+    ContainerName: ${{ parameters.ContainerName }}
+    ConfigPath: ${{ parameters.ConfigPath }}
+    LicenseFile: ${{ parameters.LicenseFile }}
+    CertSecret: ${{ parameters.CertSecret }}
+    CertFile: ${{ parameters.CertFile }}
+    CertPwd: ${{ parameters.CertPwd }}

@@ -44,6 +44,22 @@ steps:
    #Switch true for automatic Build in Azure DevOps and false for interactive build
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
+   #region TempCode
+
+   $Apps=@()
+   $Appfiles = Get-ChildItem -Path .\ -Filter *.app -Recurse:$Recurse
+
+
+   foreach ($File in $Appfiles)
+   {
+    $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
+    $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
+    $Apps+=$AppJson
+   }
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "AppCollection" -Value $Apps
+   Write-Host $Config.AppCollection
+   #endregion
+
    Write-Host $Config
 
    $Config | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigFolder,"\config.json")) -Force

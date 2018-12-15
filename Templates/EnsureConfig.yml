@@ -45,7 +45,6 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
    #region TempCode
-
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "AppCollection" -Value @()
 
    $Appfiles = Get-ChildItem -Path .\ -Filter app.json -Recurse
@@ -57,10 +56,6 @@ steps:
 
     $Config.AppCollection += $AppJson
    }
-   
-   Write-Host $Config.AppCollection
-   Write-Host "Count"
-   Write-Host $Config.AppCollection.Count
    #endregion
 
    Write-Host $Config

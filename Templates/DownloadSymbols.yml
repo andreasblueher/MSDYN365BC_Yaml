@@ -8,7 +8,8 @@ steps:
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
    Write-Host $Config.AppCollection
    Write-Host "1"
-   Write-Host $Config.AppCollection.PlatformVersion
-   #$Config | Download-ALSystemPackages -AlPackagesPath $env:Build_BinariesDirectory
+   Write-Host $Config.AppCollection.platform
+   $Config.AppCollection.platform | % { 
+      $Config | Download-ALSystemPackages -AlPackagesPath $env:Build_BinariesDirectory -PlatformVersion $_} 
 
   displayName: 'Download system symbols'

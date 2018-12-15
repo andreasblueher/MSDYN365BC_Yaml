@@ -49,18 +49,13 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "AppCollection" -Value @()
 
    $Appfiles = Get-ChildItem -Path .\ -Filter app.json -Recurse
-   
-   $a = @()
-   
+      
    foreach ($File in $Appfiles)
    {
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
-    Write-Host "1"
-    Write-Host $AppJson
+
     $Config.AppCollection += $AppJson
-    $a += $AppJson
-    Write-Host $a
    }
    
    Write-Host $Config.AppCollection

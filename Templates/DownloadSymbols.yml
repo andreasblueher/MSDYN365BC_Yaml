@@ -6,6 +6,8 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
 
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
+   Write-Host $Config.AppCollection
+   Write-Host "1"
    Write-Host $Config.AppCollection.PlatformVersion
    #$Config | Download-ALSystemPackages -AlPackagesPath $env:Build_BinariesDirectory
 

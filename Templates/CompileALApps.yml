@@ -11,6 +11,8 @@ steps:
      Install-NAVSipCryptoProviderFromNavContainer -containerName $Config.ContainerName
    }
    
+   
+   
    $Config | Compile-ALProjectTree -OrderedApps (Get-ALBuildOrder $Config.AppCollection) -PackagesPath $Config.RepoPath
    
    $Config.AppCollection | % {

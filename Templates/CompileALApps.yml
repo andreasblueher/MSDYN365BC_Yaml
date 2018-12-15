@@ -11,10 +11,11 @@ steps:
      Install-NAVSipCryptoProviderFromNavContainer -containerName $Config.ContainerName
    }
    
-   #$Config.AppCollection | % {} 
+   $Config | Compile-ALProjectTree -OrderedApps (Get-ALBuildOrder $Config.AppCollection) -PackagesPath $Config.RepoPath
    
-   $Config | Compile-ALProjectTree -OrderedApps (Get-ALAppOrder) -PackagesPath $Config.RepoPath
-   copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($Config.AppName)_*.app"
-   copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($Config.TestAppName)_*.app"
-
+   $Config.AppCollection | % {
+     copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.AppName)_*.app"
+     copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
+   }
+   
   displayName: 'Compile AL Apps'

@@ -64,6 +64,8 @@ steps:
    }
    
    Write-Host $Config.AppCollection
+   Write-Host "Count"
+   Write-Host $Config.AppCollection.Count
    #endregion
 
    Write-Host $Config

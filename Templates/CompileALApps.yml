@@ -11,7 +11,21 @@ steps:
      Install-NAVSipCryptoProviderFromNavContainer -containerName $Config.ContainerName
    }
    
-   
+   function SortApps($changedApps, $allApps) {
+     $sortedApps = @()
+     $scanned = @{}
+     $changedApps | % {
+       #example dependency { "appId": "4805fd15-75a5-46a2-952f-39c1c4eab821", "name": "WeatherLibrary", "publisher": "Microsoft", "version": "1.0.0.0"}
+       $apps.dependencies | % {
+         if ($_.publisher -eq "Microsoft") {
+           continue;
+         }
+         
+         #Could be skipped? else has to be compiled before app
+         #if ($scanned.Contains()){}
+       }
+     }
+   }
    
    $Config | Compile-ALProjectTree -OrderedApps (Get-ALBuildOrder $Config.AppCollection) -PackagesPath $Config.RepoPath
    

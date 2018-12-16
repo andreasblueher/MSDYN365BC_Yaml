@@ -1,5 +1,8 @@
 # File: CompileALApps.yml
 
+
+
+
 steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
@@ -121,3 +124,5 @@ steps:
    }
    
   displayName: 'Compile AL Apps'
+  env:
+    ConfigFolder: ${{ parameters.ConfigFolder }}

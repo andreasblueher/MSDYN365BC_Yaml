@@ -13,7 +13,7 @@ steps:
    
    # If changed apps haven't been defined simply set them to all apps
    if (-not $Config.ChangedApps) {
-     $Config | Add-Member -MemberType NoteProperty -Name "ChangedApps" -Value $Config.AllApps
+     $Config.ChangedApps = $Config.AllApps
      Write-Host "Set ChangedApps to AllApps"
    } else {
      Write-Host "Skip setting ChangedApps"

@@ -48,9 +48,11 @@ steps:
          return;
        } else {
          if ($dependency.dependencies.Count -eq 0) {
+           Write-Host "here we go"
            $Script:sortedApps += $dependency;
            $Script:scannedAppApps.Add((getAppString($dependency)))
          } else {
+           Write-Host "Checking further dependencies"
            checkApp($dependency);
          }
        }

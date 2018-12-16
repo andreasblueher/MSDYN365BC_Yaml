@@ -32,6 +32,7 @@ steps:
      Write-Host $appJson.dependencies.Count
      #example dependency { "appId": "4805fd15-75a5-46a2-952f-39c1c4eab821", "name": "WeatherLibrary", "publisher": "Microsoft", "version": "1.0.0.0"}
      $apps.dependencies | % {
+       Write-Host $_
        if (-not $_) {
          Write-Host "Komisch"
          return;

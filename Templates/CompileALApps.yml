@@ -30,6 +30,10 @@ steps:
      Write-Host $appJson
      #example dependency { "appId": "4805fd15-75a5-46a2-952f-39c1c4eab821", "name": "WeatherLibrary", "publisher": "Microsoft", "version": "1.0.0.0"}
      $apps.dependencies | % {
+       if (-not $_) {
+         Write-Host "Komisch"
+         continue;
+       }
        Write-Host "Dependency $(getAppSTring($_))"
        if ($_.publisher -eq "Microsoft") {
          continue;

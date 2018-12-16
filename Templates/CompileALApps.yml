@@ -62,6 +62,7 @@ steps:
      
      if (-not $Script:scannedApps.Contains((getAppString($appJson)))) {
        Write-Host "here we go1"
+       Write-Host $appJson.GetType()
        $Script:sortedApps += $appJson;
        $Script:scannedApps += (getAppString($appJson))
      }

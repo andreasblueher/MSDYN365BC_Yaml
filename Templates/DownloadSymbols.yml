@@ -1,5 +1,8 @@
 # File: DownloadSymbols.yml
 
+parameters:
+  ConfigFolder: ''
+
 steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
@@ -11,3 +14,5 @@ steps:
       $Config | Download-ALSystemPackages -AlPackagesPath $env:Build_BinariesDirectory -PlatformVersion $_} 
 
   displayName: 'Download system symbols'
+  env:
+    ConfigFolder: ${{ parameters.ConfigFolder }}

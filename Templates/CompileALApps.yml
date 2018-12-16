@@ -13,7 +13,8 @@ steps:
    
    # If changed apps haven't been defined simply set them to all apps
    if (-not $Config.ChangedApps) {
-     $Config | Add-Member -MemberType NoteProperty -Name "ChangedApps" -Value $Config.AppCollection
+     $Config | Add-Member -MemberType NoteProperty -Name "ChangedApps" -Value $Config.AllApps
+     Write-Host "Set ChangedApps to AllApps"
    }
    
    $sortedApps = @()
@@ -49,9 +50,9 @@ steps:
 
    #$Config | Compile-ALProjectTree -OrderedApps (Get-ALBuildOrder $Config.AppCollection) -PackagesPath $Config.RepoPath
    
-   $Config.AppCollection | % {
-     copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.AppName)_*.app"
-     copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
-   }
+   #$Config.AppCollection | % {
+   #  copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.AppName)_*.app"
+   #  copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
+   #}
    
   displayName: 'Compile AL Apps'

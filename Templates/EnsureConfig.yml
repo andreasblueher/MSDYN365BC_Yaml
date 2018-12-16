@@ -45,7 +45,8 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
    #region TempCode
-   Add-Member -InputObject $Config -MemberType Noteproperty -Name "AppCollection" -Value @()
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "AllApps" -Value @()
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "ChangedApps" -Value @()
 
    $Appfiles = Get-ChildItem -Path .\ -Filter app.json -Recurse
       
@@ -54,7 +55,7 @@ steps:
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
 
-    $Config.AppCollection += $AppJson
+    $Config.AllApps += $AppJson
    }
    #endregion
 

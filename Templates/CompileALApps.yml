@@ -84,7 +84,7 @@ steps:
      Write-Host $app
      Write-Host $app.AppPath
      $appPath = Split-Path -Path $app.AppPath
-     $appFileName = (Join-Path $Config.PackagesPath "$($app.publisher)_$($app.name)_$($app.version).app")
+     $appFileName = (Join-Path $PackagesPath "$($app.publisher)_$($app.name)_$($app.version).app")
      
      if ($Config.Auth -eq 'NavUserPassword') {
        $PWord = ConvertTo-SecureString -String $Config.Password -AsPlainText -Force

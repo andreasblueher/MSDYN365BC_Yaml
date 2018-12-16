@@ -64,7 +64,9 @@ steps:
        Write-Host "here we go1"
        Write-Host $appJson.GetType()
        $Script:sortedApps += $appJson;
+       Write-Host "hier bin ich"
        $Script:scannedApps += (getAppString($appJson))
+       Write-Host "Ende"
      }
    }
 

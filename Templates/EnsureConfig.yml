@@ -54,8 +54,10 @@ steps:
    {
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
-
+    Write-Host $AppJson
+    
     $Config.AllApps += $AppJson
+    Write-Host "$($File) $($Config.AllApps)"
    }
    #endregion
 

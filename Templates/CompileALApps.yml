@@ -74,13 +74,15 @@ steps:
      checkApp($changedApp)
    }
    
-   Write-Host $sortedApps
+   Write-Host "SortedApps $($sortedApps)"
    #Write-Host $scannedApps
    
    $PackagesPath = Get-Location
 
    foreach ($app in $sortedApps) {
      Write-Host "**** Compiling $($app.name) ****"
+     Write-Host $app
+     Write-Host $app.AppPath
      $appPath = Split-Path -Path $app.AppPath
      $appFileName = (Join-Path $Config.PackagesPath "$($app.publisher)_$($app.name)_$($app.version).app")
      

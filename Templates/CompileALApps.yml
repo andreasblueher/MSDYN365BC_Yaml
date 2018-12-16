@@ -1,7 +1,7 @@
 # File: CompileALApps.yml
 
-
-
+parameters:
+  ConfigFolder: ''
 
 steps:
 - powershell: |

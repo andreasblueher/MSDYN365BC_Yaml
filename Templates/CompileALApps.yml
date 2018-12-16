@@ -22,7 +22,7 @@ steps:
    }
    
    $sortedApps = @()
-   $scannedApps = @{}
+   $scannedApps = @()
    
    function getAppString($appJson) {
      return "$($appJson.publisher)_$($appJson.name)_$($appJson.version).app"
@@ -65,7 +65,7 @@ steps:
        Write-Host $appJson.GetType()
        $Script:sortedApps += $appJson;
        Write-Host "hier bin ich"
-       $Script:scannedApps += @{getAppString($appJson)}
+       $Script:scannedApps += (getAppString($appJson))
        Write-Host "Ende"
      }
    }

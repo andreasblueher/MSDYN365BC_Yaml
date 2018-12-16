@@ -16,7 +16,7 @@ steps:
    # If changed apps haven't been defined simply set them to all apps
    if (-not $Config.ChangedApps) {
      $Config.ChangedApps = $Config.AllApps
-     Write-Host "Set ChangedApps to AllApps"
+     #Write-Host "Set ChangedApps to AllApps"
    } else {
      Write-Host "Skip setting ChangedApps"
    }
@@ -31,7 +31,6 @@ steps:
    function checkApp($appJson) {
      Write-Host $appJson.dependencies.Count
      Write-Host $appJson.dependencies
-     Write-Host $appJson.dependencies.GetType()
      #example dependency { "appId": "4805fd15-75a5-46a2-952f-39c1c4eab821", "name": "WeatherLibrary", "publisher": "Microsoft", "version": "1.0.0.0"}
      foreach ($dependency in $apps.dependencies) {
        Write-Host $dependency
@@ -49,8 +48,8 @@ steps:
        } else {
          if ($dependency.dependencies.Count -eq 0) {
            Write-Host "here we go0"
-           Write-Host $dependency.GetType()
-           Write-Host $Script:sortedApps.GetType()
+           #Write-Host $dependency.GetType()
+           #Write-Host $Script:sortedApps.GetType()
            $Script:sortedApps += $dependency;
            $Script:scannedAppApps += (getAppString($dependency))
          } else {
@@ -62,11 +61,11 @@ steps:
      
      if (-not $Script:scannedApps.Contains((getAppString($appJson)))) {
        Write-Host "here we go1"
-       Write-Host $appJson.GetType()
+       #Write-Host $appJson.GetType()
        $Script:sortedApps += $appJson;
-       Write-Host "hier bin ich"
+       #Write-Host "hier bin ich"
        $Script:scannedApps += (getAppString($appJson))
-       Write-Host "Ende"
+       #Write-Host "Ende"
      }
    }
 
@@ -76,13 +75,47 @@ steps:
    }
    
    Write-Host $sortedApps
-   Write-Host $scannedApps
+   #Write-Host $scannedApps
+   
+   $PackagesPath = Get-Location
+
+   foreach ($app in $sortedApps) {
+     Write-Host "**** Compiling $($app.name) ****"
+     $appPath = Split-Path -Path $app.AppPath
+     $appFileName = (Join-Path $Config.PackagesPath "$($app.publisher)_$($app.name)_$($app.version).app")
+     
+     if ($Config.Auth -eq 'NavUserPassword') {
+       $PWord = ConvertTo-SecureString -String $Config.Password -AsPlainText -Force
+       $User = $Config.Username
+       $credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User,$PWord
+       
+       Compile-AppInNavContainer -containerName $Config.ContainerName -appProjectFolder $app.AppPath -appOutputFolder $PackagesPath -appSymbolsFolder $PackagesPath -AzureDevOps -credential $credentials
+     } else {
+       Compile-AppInNavContainer -containerName $Config.ContainerName -appProjectFolder $app.AppPath -appOutputFolder $PackagesPath -appSymbolsFolder $PackagesPath -AzureDevOps
+     }
+     
+     if ($Config.CertFile) {
+       if ($Config.CertPwd) {
+           Write-Host "Signing the app with $CertPath and password inside container..."
+           
+           Sign-NAVContainerApp -containerName $Config.ContainerName -appFile $AppFileName -pfxFile $Config.CertPath -pfxPassword (ConvertTo-SecureString -String $Config.CertPwd -AsPlainText -Force)
+       } else {
+           if (Test-Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\SignTool.exe") {
+               $SignTool = (get-item "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\SignTool.exe").FullName
+           } else {
+               throw "Couldn't find SignTool.exe, please install Windows SDK from https://go.microsoft.com/fwlink/p/?LinkID=2023014"
+           }
+           Write-Host "Signing the app with $CertPath without password (account permissions inside certificate used)..."
+           & $SignTool sign /f $Config.CertPath /t http://timestamp.verisign.com/scripts/timestamp.dll $AppFileName
+       }
+      }
+   }
 
    #$Config | Compile-ALProjectTree -OrderedApps (Get-ALBuildOrder $Config.AppCollection) -PackagesPath $Config.RepoPath
    
-   #$Config.AppCollection | % {
-   #  copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.AppName)_*.app"
-   #  copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
-   #}
+   $Config.AllApps | % {
+     copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.AppName)_*.app"
+     copy-item -Path (Join-Path $Config.RepoPath '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
+   }
    
   displayName: 'Compile AL Apps'

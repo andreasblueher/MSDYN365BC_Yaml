@@ -50,7 +50,7 @@ steps:
          if ($dependency.dependencies.Count -eq 0) {
            Write-Host "here we go"
            $Script:sortedApps = @($dependency) + $Script:sortedApps;
-           $Script:scannedAppApps.Add((getAppString($dependency)))
+           $Script:scannedAppApps += (getAppString($dependency))
          } else {
            Write-Host "Checking further dependencies"
            checkApp($dependency);
@@ -60,8 +60,8 @@ steps:
      
      if (-not $Script:scannedApps.Contains((getAppString($appJson)))) {
        Write-Host "here we go"
-       $Script:sortedApps += $dependency;
-       $Script:scannedApps.Add((getAppString($dependency)))
+       $Script:sortedApps += $appJson;
+       $Script:scannedApps += (getAppString($appJson))
      }
    }
 

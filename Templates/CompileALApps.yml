@@ -31,33 +31,33 @@ steps:
    function checkApp($appJson) {
      Write-Host $appJson.dependencies.Count
      #example dependency { "appId": "4805fd15-75a5-46a2-952f-39c1c4eab821", "name": "WeatherLibrary", "publisher": "Microsoft", "version": "1.0.0.0"}
-     $apps.dependencies | % {
-       Write-Host $_
-       if (-not $_) {
+     foreach ($dependency in $apps.dependencies) {
+       Write-Host $dependency
+       if (-not $dependency) {
          Write-Host "Komisch"
          return;
        }
-       Write-Host "Dependency $(getAppSTring($_))"
-       if ($_.publisher -eq "Microsoft") {
+       Write-Host "Dependency $(getAppSTring($dependency))"
+       if ($dependency.publisher -eq "Microsoft") {
          return;
        }
 
-       if ($Script:scannedApp.Contains((getAppString($_)))) {
+       if ($Script:scannedApp.Contains((getAppString($dependency)))) {
          return;
        } else {
-         if (-not $_.dependencies) {
-           $Script:sortedApps += $_;
-           $Script:scannedAppApps.Add((getAppString($_)))
+         if ($dependency.dependencies.Count -eq 0) {
+           $Script:sortedApps += $dependency;
+           $Script:scannedAppApps.Add((getAppString($dependency)))
          } else {
-           checkApp($_);
+           checkApp($dependency);
          }
        }
      }
    }
 
-   $Config.ChangedApps | % {
-     Write-Host $(getAppString($_))
-     checkApp($_)
+   foreach ($changedApp in $Config.ChangedApps) {
+     Write-Host $(getAppString($changedApp))
+     checkApp($changedApp)
    }
 
    #$Config | Compile-ALProjectTree -OrderedApps (Get-ALBuildOrder $Config.AppCollection) -PackagesPath $Config.RepoPath

@@ -34,15 +34,15 @@ steps:
      $apps.dependencies | % {
        if (-not $_) {
          Write-Host "Komisch"
-         continue;
+         return;
        }
        Write-Host "Dependency $(getAppSTring($_))"
        if ($_.publisher -eq "Microsoft") {
-         continue;
+         return;
        }
 
        if ($Script:scannedApp.Contains((getAppString($_)))) {
-         continue;
+         return;
        } else {
          if (-not $_.dependencies) {
            $Script:sortedApps += $_;

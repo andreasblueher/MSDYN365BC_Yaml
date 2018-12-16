@@ -58,7 +58,7 @@ steps:
        }
      }
      
-     if (-not $Script:scannedApps.Contains((getAppString($appJson))) {
+     if (-not $Script:scannedApps.Contains((getAppString($appJson)))) {
        Write-Host "here we go"
        $Script:sortedApps += $dependency;
        $Script:scannedApps.Add((getAppString($dependency)))

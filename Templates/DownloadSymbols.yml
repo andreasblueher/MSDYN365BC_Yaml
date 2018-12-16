@@ -7,7 +7,7 @@ steps:
 
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
 
-   $Config.AppCollection.platform | Get-Unique | % { 
+   $Config.AllApps.platform | Get-Unique | % { 
       $Config | Download-ALSystemPackages -AlPackagesPath $env:Build_BinariesDirectory -PlatformVersion $_} 
 
   displayName: 'Download system symbols'

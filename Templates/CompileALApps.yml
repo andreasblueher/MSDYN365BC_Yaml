@@ -11,6 +11,8 @@ steps:
      Install-NAVSipCryptoProviderFromNavContainer -containerName $Config.ContainerName
    }
    
+   Write-Host $Config.AllApps.Count
+   
    # If changed apps haven't been defined simply set them to all apps
    if (-not $Config.ChangedApps) {
      $Config.ChangedApps = $Config.AllApps

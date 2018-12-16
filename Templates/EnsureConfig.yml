@@ -57,11 +57,12 @@ steps:
     Write-Host $AppJson
     
     $Config.AllApps += $AppJson
-    Write-Host "$($File) $($Config.AllApps)"
+    Write-Host "$($File.FullName) $($Config.AllApps)"
    }
    #endregion
 
    Write-Host $Config
+   Write-host $Config.AllApps.Count
 
    $Config | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigFolder,"\config.json")) -Force
 

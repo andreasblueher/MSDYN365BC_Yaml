@@ -15,6 +15,8 @@ steps:
    if (-not $Config.ChangedApps) {
      $Config | Add-Member -MemberType NoteProperty -Name "ChangedApps" -Value $Config.AllApps
      Write-Host "Set ChangedApps to AllApps"
+   } else {
+     Write-Host "Skip setting ChangedApps"
    }
    
    $sortedApps = @()
@@ -27,6 +29,7 @@ steps:
    function checkApp($appJson) {
      #example dependency { "appId": "4805fd15-75a5-46a2-952f-39c1c4eab821", "name": "WeatherLibrary", "publisher": "Microsoft", "version": "1.0.0.0"}
      $apps.dependencies | % {
+       Write-Host "Dependency $(getAppSTring($_))"
        if ($_.publisher -eq "Microsoft") {
          continue;
        }
@@ -45,6 +48,7 @@ steps:
    }
 
    $Config.ChangedApps | % {
+     Write-Host $(getAppString($_))
      checkApp($_)
    }
 

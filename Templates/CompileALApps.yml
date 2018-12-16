@@ -91,9 +91,9 @@ steps:
        $User = $Config.Username
        $credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User,$PWord
        
-       Compile-AppInNavContainer -containerName $Config.ContainerName -appProjectFolder $app.AppPath -appOutputFolder $PackagesPath -appSymbolsFolder $PackagesPath -AzureDevOps -credential $credentials
+       Compile-AppInNavContainer -containerName $Config.ContainerName -appProjectFolder $appPath -appOutputFolder $PackagesPath -appSymbolsFolder $PackagesPath -AzureDevOps -credential $credentials
      } else {
-       Compile-AppInNavContainer -containerName $Config.ContainerName -appProjectFolder $app.AppPath -appOutputFolder $PackagesPath -appSymbolsFolder $PackagesPath -AzureDevOps
+       Compile-AppInNavContainer -containerName $Config.ContainerName -appProjectFolder $appPath -appOutputFolder $PackagesPath -appSymbolsFolder $PackagesPath -AzureDevOps
      }
      
      if ($Config.CertFile) {

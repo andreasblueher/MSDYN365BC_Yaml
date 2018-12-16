@@ -49,7 +49,9 @@ steps:
        } else {
          if ($dependency.dependencies.Count -eq 0) {
            Write-Host "here we go"
-           $Script:sortedApps = @($dependency) + $Script:sortedApps;
+           Write-Host $dependency.GetType()
+           Write-Host $Script:sortedApps.GetType()
+           $Script:sortedApps += $dependency;
            $Script:scannedAppApps += (getAppString($dependency))
          } else {
            Write-Host "Checking further dependencies"

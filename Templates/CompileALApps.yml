@@ -22,7 +22,7 @@ steps:
    }
    
    $sortedApps = @()
-   $scannedApp = @{}
+   $scannedApps = @{}
    
    function getAppString($appJson) {
      return "$($appJson.publisher)_$($appJson.name)_$($appJson.version).app"
@@ -44,12 +44,12 @@ steps:
          return;
        }
 
-       if ($Script:scannedApp.Contains((getAppString($dependency)))) {
+       if ($Script:scannedApps.Contains((getAppString($dependency)))) {
          return;
        } else {
          if ($dependency.dependencies.Count -eq 0) {
            Write-Host "here we go"
-           $Script:sortedApps += $dependency;
+           $Script:sortedApps = @($dependency) + $Script:sortedApps;
            $Script:scannedAppApps.Add((getAppString($dependency)))
          } else {
            Write-Host "Checking further dependencies"
@@ -57,12 +57,21 @@ steps:
          }
        }
      }
+     
+     if (-not $Script:scannedApps.Contains((getAppString($appJson))) {
+       Write-Host "here we go"
+       $Script:sortedApps += $dependency;
+       $Script:scannedApps.Add((getAppString($dependency)))
+     }
    }
 
    foreach ($changedApp in $Config.ChangedApps) {
      Write-Host $(getAppString($changedApp))
      checkApp($changedApp)
    }
+   
+   Write-Host $sortedApps
+   Write-Host $scannedApps
 
    #$Config | Compile-ALProjectTree -OrderedApps (Get-ALBuildOrder $Config.AppCollection) -PackagesPath $Config.RepoPath
    

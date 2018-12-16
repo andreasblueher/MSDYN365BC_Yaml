@@ -48,7 +48,7 @@ steps:
          return;
        } else {
          if ($dependency.dependencies.Count -eq 0) {
-           Write-Host "here we go"
+           Write-Host "here we go0"
            Write-Host $dependency.GetType()
            Write-Host $Script:sortedApps.GetType()
            $Script:sortedApps += $dependency;
@@ -61,7 +61,7 @@ steps:
      }
      
      if (-not $Script:scannedApps.Contains((getAppString($appJson)))) {
-       Write-Host "here we go"
+       Write-Host "here we go1"
        $Script:sortedApps += $appJson;
        $Script:scannedApps += (getAppString($appJson))
      }

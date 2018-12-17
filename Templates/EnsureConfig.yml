@@ -44,7 +44,8 @@ steps:
    #Switch true for automatic Build in Azure DevOps and false for interactive build
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
-   #region TempCode
+   #region TempCode+
+   $SettingsScript = (Join-Path .\ 'Scripts\Settings.ps1')
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "AllApps" -Value @()
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ChangedApps" -Value @()
 

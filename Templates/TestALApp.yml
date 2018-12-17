@@ -3,18 +3,17 @@
 parameters:
   TrxFile: 'TestResults.trx'
   TestCodeunitId: 0
-  pwd: 'pass@word1'
-
+  
 steps:
 - powershell: |
    Import-Module NVRAppDevOps -DisableNameChecking
    Import-Module navcontainerhelper -DisableNameChecking
-   $Config = Read-ALConfiguration -Path .\ 
-   $Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $env:USER_PWD
+   
+   $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
+   
+   $Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $Config.Password
 
   displayName: 'Run Tests'
   env:
     TrxFile: ${{ parameters.TrxFile }}
     TestCodeunitId: ${{ parameters.TestCodeunitId }}
-    USER_PWD: ${{ parameters.pwd }}
-

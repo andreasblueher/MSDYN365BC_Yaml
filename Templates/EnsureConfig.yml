@@ -45,21 +45,20 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
    #region TempCode
-   . (Join-Path $Path 'Scripts\Settings.ps1')
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "AllApps" -Value @()
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "ChangedApps" -Value @()
 
-   $Apps=@()
    $Appfiles = Get-ChildItem -Path .\ -Filter app.json -Recurse
-   Write-Host $AppFiles
-   Get-ChildItem -Filter app.json -Recurse
 
    foreach ($File in $Appfiles)
    {
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
-    $Apps+=$AppJson
+    Write-Host $AppJson
+
+    $Config.AllApps += $AppJson
+    Write-Host "$($File.FullName) $($Config.AllApps)"
    }
-   Add-Member -InputObject $Config -MemberType Noteproperty -Name "AppCollection" -Value $Apps
-   Write-Host $Config.AppCollection
 
    Write-Host "Config RepoPath" -NoNewLine
    Write-Host $Config.RepoPath
@@ -69,6 +68,7 @@ steps:
    #endregion
 
    Write-Host $Config
+   Write-host $Config.AllApps.Count
 
    $Config | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigFolder,"\config.json")) -Force
 

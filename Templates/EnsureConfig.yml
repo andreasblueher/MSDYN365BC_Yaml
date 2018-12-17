@@ -45,7 +45,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
    #region TempCode+
-   $SettingsScript = (Join-Path .\ 'Scripts\Settings.ps1')
+   . (Join-Path .\ 'Scripts\Settings.ps1')
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "AllApps" -Value @()
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ChangedApps" -Value @()
 

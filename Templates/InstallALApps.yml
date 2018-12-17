@@ -12,9 +12,9 @@ steps:
    
    $Config | UnPublish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps)
    if ($Config.CertFile) {
-     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $env:Build_ArtifactStagingDirectory
+     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $Config.RepoPath
    } else {
-     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $env:Build_ArtifactStagingDirectory -SkipVerification 'true'
+     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $Config.RepoPath -SkipVerification 'true'
    } 
 
   displayName: 'Install AL Apps'

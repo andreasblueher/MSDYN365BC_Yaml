@@ -101,9 +101,9 @@ steps:
      
      if ($Config.CertFile) {
        if ($Config.CertPwd) {
-           Write-Host "Signing the app with $CertPath and password inside container..."
+           Write-Host "Signing the app with $Config.CertFile and password inside container..."
            
-           Sign-NAVContainerApp -containerName $Config.ContainerName -appFile $AppFileName -pfxFile $Config.CertPath -pfxPassword (ConvertTo-SecureString -String $Config.CertPwd -AsPlainText -Force)
+           Sign-NAVContainerApp -containerName $Config.ContainerName -appFile $AppFileName -pfxFile $Config.CertFile -pfxPassword (ConvertTo-SecureString -String $Config.CertPwd -AsPlainText -Force)
        } else {
            if (Test-Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\SignTool.exe") {
                $SignTool = (get-item "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\SignTool.exe").FullName
@@ -111,7 +111,7 @@ steps:
                throw "Couldn't find SignTool.exe, please install Windows SDK from https://go.microsoft.com/fwlink/p/?LinkID=2023014"
            }
            Write-Host "Signing the app with $CertPath without password (account permissions inside certificate used)..."
-           & $SignTool sign /f $Config.CertPath /t http://timestamp.verisign.com/scripts/timestamp.dll $AppFileName
+           & $SignTool sign /f $Config.CertFile /t http://timestamp.verisign.com/scripts/timestamp.dll $AppFileName
        }
       }
    }

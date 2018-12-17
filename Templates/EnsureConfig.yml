@@ -45,6 +45,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
    #region TempCode
+   . (Join-Path $Path 'Scripts\Settings.ps1')
 
    $Apps=@()
    $Appfiles = Get-ChildItem -Path .\ -Filter app.json -Recurse
@@ -59,6 +60,12 @@ steps:
    }
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "AppCollection" -Value $Apps
    Write-Host $Config.AppCollection
+
+   Write-Host "Config RepoPath" -NoNewLine
+   Write-Host $Config.RepoPath
+
+   Write-Host "Settings.ps1 RepoPath" -NoNewLine
+   Write-Host $RepoPath
    #endregion
 
    Write-Host $Config

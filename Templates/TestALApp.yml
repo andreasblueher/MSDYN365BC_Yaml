@@ -11,7 +11,7 @@ steps:
    
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
    
-   $Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $Config.Password
+   $Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $Config.Password -ClientPath $Config.RepoPath
 
   displayName: 'Run Tests'
   env:

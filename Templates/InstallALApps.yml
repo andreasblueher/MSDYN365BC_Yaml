@@ -10,11 +10,11 @@ steps:
    
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
    
-   $Config | UnPublish-ALAppTree -OrderedApps (Get-ALAppOrder $Config.AllApps)
+   $Config | UnPublish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps)
    if ($Config.CertFile) {
-     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder $Config.AllApps) -PackagesPath $env:Build_ArtifactStagingDirectory
+     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $env:Build_ArtifactStagingDirectory
    } else {
-     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder $Config.AllApps) -PackagesPath $env:Build_ArtifactStagingDirectory -SkipVerification 'true'
+     $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $env:Build_ArtifactStagingDirectory -SkipVerification 'true'
    } 
 
   displayName: 'Install AL Apps'

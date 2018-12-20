@@ -9,7 +9,7 @@ steps:
 
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
    
-   [Version]$version = $Config.AllApps.version | Sort-Object -Descending | Select-Object -first
+   [Version]$version = ($Config.AllApps.version | Sort-Object -Descending)[0]
    
    Write-Host $version
    

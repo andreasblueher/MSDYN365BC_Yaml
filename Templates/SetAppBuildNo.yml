@@ -8,7 +8,19 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
 
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
-   $Config | Set-ALAppBuildNo -UpdateDevOpsBuildNo:([bool]$env:UpdateDevOpsBuildNo)
+   
+   [Version]$version = $Config.AllApps.version | Sort-Object -Descending | Select-Object -first
+   
+   Write-Host $version
+   
+   $NewVersion = "$($version.Major).$($version.Minor).$($Build_BuildId)"
+   
+   Write-Host $NewVersion
+   
+   write-host "Updating build pipeline no. to $NewVersion"
+   write-host "##vso[build.updatebuildnumber]$NewVersion"
+   
+   #$Config | Set-ALAppBuildNo -UpdateDevOpsBuildNo:([bool]$env:UpdateDevOpsBuildNo)
 
   displayName: 'Set App Build and Revision No.'
   env:

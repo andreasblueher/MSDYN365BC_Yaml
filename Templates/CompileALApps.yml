@@ -14,7 +14,6 @@ steps:
 
    $Config.AllApps | % {
     copy-item -Path (Join-Path -Path $Config.RepoPath -ChildPath (-join("*",$_.name,"*.app")) -Resolve) -Destination $env:Build_ArtifactStagingDirectory
-    #copy-item -Path (Join-Path -Path $Config.RepoPath -ChildPath 'output' | Join-Path -ChildPath '*.app' -Resolve) -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
    }
 
   displayName: 'Compile AL Apps'

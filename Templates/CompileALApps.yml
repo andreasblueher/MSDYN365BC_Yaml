@@ -13,8 +13,8 @@ steps:
    $Config | Compile-ALProjectTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $Config.RepoPath -CertPath $Config.CertFile -CertPwd $Config.CertPwd
 
    $Config.AllApps | % {
-     copy-item -Path (Join-Path $Config.RepoPath output '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.AppName)_*.app"
-     copy-item -Path (Join-Path $Config.RepoPath output '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
+     copy-item -Path (Join-Path $Config.RepoPath 'output' '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.AppName)_*.app"
+     copy-item -Path (Join-Path $Config.RepoPath 'output' '*.app') -Destination $env:Build_ArtifactStagingDirectory -Filter "*_$($_.TestAppName)_*.app"
    }
 
   displayName: 'Compile AL Apps'

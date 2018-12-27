@@ -13,7 +13,7 @@ steps:
 
    Write-Host $version
 
-   $NewVersion = "$($version.Major).$($version.Minor).$($env:BUILD_BUILDID)"
+   $NewVersion = "$($version.Major).$($version.Minor).$($env:BUILD_BUILDID).0"
 
    Write-Host $NewVersion
 

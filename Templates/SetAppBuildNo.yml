@@ -1,5 +1,6 @@
 # File: SetAppBuildNo.yml
 parameters:
+  ConfigFolder: ''
   UpdateDevOpsBuildNo: 1
 
 steps:
@@ -23,4 +24,5 @@ steps:
 
   displayName: 'Set App Build and Revision No.'
   env:
+    ConfigFolder: ${{ parameters.ConfigFolder }}
     UpdateDevOpsBuildNo: ${{ parameters.UpdateDevOpsBuildNo }}

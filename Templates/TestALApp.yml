@@ -1,8 +1,9 @@
 # File: TestALApp.yml
 
 parameters:
-  TrxFile: 'TestResults.trx'
+  ConfigFolder: ''
   TestCodeunitId: 0
+  TrxFile: 'TestResults.trx'
 
 steps:
 - powershell: |
@@ -15,5 +16,6 @@ steps:
 
   displayName: 'Run Tests'
   env:
-    TrxFile: ${{ parameters.TrxFile }}
+    ConfigFolder: ${{ parameters.ConfigFolder }}
     TestCodeunitId: ${{ parameters.TestCodeunitId }}
+    TrxFile: ${{ parameters.TrxFile }}

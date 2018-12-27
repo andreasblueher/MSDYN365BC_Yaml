@@ -1,4 +1,4 @@
-# File: CompileALApps.yml
+# File: EnsureConfig.yml
 
 parameters:
   Auth: ''

@@ -106,6 +106,6 @@ steps:
     searchFolder: '$(Common.TestResultsDirectory)'
   condition: succeededOrFailed()
 
-- template: Templates/RemoveEnv.yml@MSDYN365BC_Yaml
-  parameters:
-    ConfigFolder: $(ConfigFolder)
+#- template: Templates/RemoveEnv.yml@MSDYN365BC_Yaml
+#  parameters:
+#    ConfigFolder: $(ConfigFolder)

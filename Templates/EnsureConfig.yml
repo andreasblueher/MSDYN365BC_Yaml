@@ -31,6 +31,11 @@ steps:
     [IO.File]::WriteAllBytes($TmpFile, $pfxProtectedBytes)
    }
 
+   $additionalParameters = @("--volume ""$($RepoPath):C:\app""",
+    '-e CustomNavSettings=ServicesUseNTLMAuthentication=true',
+    '--storage-opt "size=50GB"'
+   )
+
    $Config = New-Object -Typename psobject
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ContainerName" -Value $env:ContainerName
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ImageName" -Value $env:ImageName
@@ -41,6 +46,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Password" -Value $env:UserPwd
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Auth" -Value $env:Auth
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "RepoPath" -Value $env:BUILD_REPOSITORY_LOCALPATH
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "additionalParameters" -Value $additionalParameters
    #Switch true for automatic Build in Azure DevOps and false for interactive build
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 

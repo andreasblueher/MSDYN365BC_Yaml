@@ -9,8 +9,14 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
 
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
+   
+   Write-Host $Config.AllApps
+   
+   $orderedApps = Get-ALAppOrder -AppCollection $Config.AllApps
 
-   $Config | Compile-ALProjectTree -OrderedApps (Get-ALAppOrder -AppCollection $Config.AllApps) -PackagesPath $Config.RepoPath -CertPath $Config.CertFile
+   Write-Host $orderedApps
+
+   $Config | Compile-ALProjectTree -OrderedApps $orderedApps -PackagesPath $Config.RepoPath -CertPath $Config.CertFile
 
    $Config.AllApps | % {
     copy-item -Path (Join-Path -Path $Config.RepoPath -ChildPath (-join("*",$_.name,"*.app")) -Resolve) -Destination $env:Build_ArtifactStagingDirectory

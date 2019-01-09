@@ -62,7 +62,9 @@ steps:
 
    foreach ($File in $Appfiles)
    {
-    Write-Host $File.FullName
+    if ($File.FullName -contains "*.sample") {
+      continue;
+    }
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
 

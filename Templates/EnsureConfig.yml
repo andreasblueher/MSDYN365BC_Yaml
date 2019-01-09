@@ -63,6 +63,7 @@ steps:
    foreach ($File in $Appfiles)
    {
     if ($File.FullName -like "*.sample") {
+      Write-Host "I'm here"
       continue;
     }
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json

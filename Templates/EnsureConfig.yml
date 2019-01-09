@@ -70,6 +70,7 @@ steps:
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
 
     $Config.AllApps += $AppJson
+    Write-Host $AppJson
    }
    #endregion
 

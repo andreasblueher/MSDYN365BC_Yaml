@@ -62,7 +62,7 @@ steps:
 
    foreach ($File in $Appfiles)
    {
-    if ($File.FullName -like "*.sample") {
+    if ($File.FullName -like "*.sample*") {
       Write-Host "I'm here"
       continue;
     }

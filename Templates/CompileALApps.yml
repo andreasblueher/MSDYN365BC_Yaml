@@ -13,9 +13,7 @@ steps:
    $Apps = @{};
    Foreach($App in $Config.AllApps)
    {
-    $AppJson = Get-Content -Path $App.FullName | ConvertFrom-Json
-    $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $App.FullName
-    $Apps.Add($AppJson.name,$AppJson)
+    $Apps.Add($App.name,$App)
    }
 
    Write-Host $Config.AllApps

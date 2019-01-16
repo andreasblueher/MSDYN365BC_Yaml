@@ -19,7 +19,7 @@ steps:
    $Config.AllApps | % {
       $AppSetup = Get-Content -Path $_.AppPath -Encoding UTF8 | ConvertFrom-Json
       $AppSetup.version = $NewVersion
-      $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_ -Encoding UTF8
+      $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_.AppPath -Encoding UTF8
       $_.version = $NewVersion
    }
 

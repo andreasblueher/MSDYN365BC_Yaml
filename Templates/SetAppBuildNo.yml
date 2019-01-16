@@ -16,11 +16,14 @@ steps:
 
    write-host "Updating build pipeline no. to $NewVersion"
    write-host "##vso[build.updatebuildnumber]$NewVersion"
-   $Config.AllApps.AppPath | % {
-      $AppSetup = Get-Content -Path $_ -Encoding UTF8 | ConvertFrom-Json
+   $Config.AllApps | % {
+      $AppSetup = Get-Content -Path $_.AppPath -Encoding UTF8 | ConvertFrom-Json
       $AppSetup.version = $NewVersion
-      $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_ -Encoding UTF8
+      $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_ -Encoding
+      $_.version = $NewVersion
    }
+
+   $Config | ConvertTo-Json -Depth 100 | Out-File (-join($env:ConfigFolder,"\config.json")) -Force
 
   displayName: 'Set App Build and Revision No.'
   env:

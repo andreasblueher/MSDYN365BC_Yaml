@@ -16,10 +16,10 @@ steps:
 
    write-host "Updating build pipeline no. to $NewVersion"
    write-host "##vso[build.updatebuildnumber]$NewVersion"
-   $Config.AllApps | Foreach-Object {
-      $AppSetup = Get-Content -Path $_.AppPath | ConvertFrom-Json
+   $Config.AllApps | % {
+      $AppSetup = Get-Content -Path $_.AppPath -Encoding UTF8 | ConvertFrom-Json
       $AppSetup.version = $NewVersion
-      $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_ -Encoding
+      $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_ -Encoding UTF8
       $_.version = $NewVersion
    }
 

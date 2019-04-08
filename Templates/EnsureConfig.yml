@@ -31,10 +31,7 @@ steps:
     [IO.File]::WriteAllBytes($TmpFile, $pfxProtectedBytes)
    }
 
-   $additionalParameters = @("--volume ""$($env:BUILD_REPOSITORY_LOCALPATH):C:\app""",
-    '-e CustomNavSettings=ServicesUseNTLMAuthentication=true',
-    '--storage-opt "size=50GB"'
-   )
+   $optionalParameters = @('--storage-opt "size=50GB"')
 
    $Config = New-Object -Typename psobject
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ContainerName" -Value $env:ContainerName
@@ -47,7 +44,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Auth" -Value $env:Auth
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "RepoPath" -Value $env:BUILD_REPOSITORY_LOCALPATH
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "RAM" -Value "8GB"
-   Add-Member -InputObject $Config -MemberType Noteproperty -Name "additionalParameters" -Value $additionalParameters
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "optionalParameters" -Value $optionalParameters
    #Switch true for automatic Build in Azure DevOps and false for interactive build
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true
 
@@ -56,7 +53,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ChangedApps" -Value @()
 
    $Appfiles = Get-ChildItem -Path .\ -Filter app.json -Recurse
-   
+
    Write-Host $Appfiles
    Write-Host Get-ChildItem
 

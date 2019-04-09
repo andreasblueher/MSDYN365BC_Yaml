@@ -51,6 +51,7 @@ steps:
    #region TempCode+
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "AllApps" -Value @()
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ChangedApps" -Value @()
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "HelperApps" -Value @()
 
    $Appfiles = Get-ChildItem -Path .\ -Filter app.json -Recurse
 
@@ -63,10 +64,18 @@ steps:
       Write-Host "I'm here"
       continue;
     }
+
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
+    if ($File.Fullname -like "*\helpers\*")
+    {
+      $Config.HelperApps += $AppJson
+    }
+    else
+    {
+      $Config.AllApps += $AppJson
+    }
 
-    $Config.AllApps += $AppJson
     Write-Host $AppJson
    }
    #endregion

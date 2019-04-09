@@ -16,11 +16,18 @@ steps:
     $Apps.Add($App.name,$App)
    }
 
+   $HelperApps = @{};
+   Foreach($HelperApp in $Config.HelperApps)
+   {
+    $HelperApps.Add($HelperApp.name,$HelperApp)
+   }
+
    Write-Host $Config.AllApps
 
    Write-Host $Apps
 
    $Config | Compile-ALProjectTree -OrderedApps (Get-ALAppOrder -AppCollection $Apps) -PackagesPath $Config.RepoPath -CertPath $Config.CertFile
+   $Config | Compile-ALProjectTree -OrderedApps (Get-ALAppOrder -AppCollection $HelperApps) -PackagesPath $Config.RepoPath -CertPath $Config.CertFile
 
    $Config.AllApps | % {
     copy-item -Path (Join-Path -Path $Config.RepoPath -ChildPath (-join("*",$_.name,"*.app")) -Resolve) -Destination $env:Build_ArtifactStagingDirectory

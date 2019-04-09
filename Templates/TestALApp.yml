@@ -20,7 +20,7 @@ steps:
    $Failed = $ResultsXML.assemblies.assembly.failed
    Foreach($Fail in $Failed){If($fail -gt 0){$FailCounter = $FailCounter + $Fail}}
 
-   If($FailCounter -gt 0){ Write-Error "There are $($FailCounter) failing tests!"  }
+   If($FailCounter -gt 0){ Write-Host "There are $($FailCounter) failing tests!"  }
 
   displayName: 'Run Tests'
   env:

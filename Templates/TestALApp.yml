@@ -11,8 +11,16 @@ steps:
    Import-Module navcontainerhelper -DisableNameChecking
 
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
+   $ResultXMLPath = (-join($env:BUILD_REPOSITORY_LOCALPATH,"\",$Config.ContainerName,".results.xml"))
    $ClientPath = Get-ALDesktopClientPath -ContainerName $Config.ContainerName
-   $Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $Config.Password -ClientPath $ClientPath
+   #$Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $Config.Password -ClientPath $ClientPath
+   $Config | Run-ALTestInContainer -XUnitResultFileName $ResultXMLPath -AzureDevOps "error"
+   [XML]$ResultsXML = Get-Content -Path $ResultXMLPath
+   $FailCounter = 0
+   $Failed = $ResultsXML.assemblies.assembly.failed
+   Foreach($Fail in $Failed){If($fail -gt 0){$FailCounter = $FailCounter + $Fail}}
+
+   If($FailCounter -gt 0){ Write-Error "There are $($FailCounter) failing tests!"  }
 
   displayName: 'Run Tests'
   env:

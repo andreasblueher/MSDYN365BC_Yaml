@@ -13,7 +13,7 @@ steps:
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
    $ClientPath = Get-ALDesktopClientPath -ContainerName $Config.ContainerName
    #$Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $Config.Password -ClientPath $ClientPath
-   $Config | Run-ALTestInContainer -XUnitResultFileName "c:\ProgramData\NavContainerHelper\Test.results.xml" -AzureDevOps "warning"
+   $Config | Run-ALTestInContainer -XUnitResultFileName "c:\ProgramData\NavContainerHelper\$($Config.ContainerName).results.xml" -AzureDevOps "warning"
   displayName: 'Run Tests'
   env:
     ConfigFolder: ${{ parameters.ConfigFolder }}

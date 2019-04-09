@@ -14,7 +14,7 @@ steps:
    $ResultXMLPath = (-join($env:BUILD_REPOSITORY_LOCALPATH,"\",$Config.ContainerName,".results.xml"))
    $ClientPath = Get-ALDesktopClientPath -ContainerName $Config.ContainerName
    #$Config | Test-ALApp -TrxFile $env:TrxFile -TestCodeunitId $env:TestCodeunitId -ErrorOnFailedTest -Password $Config.Password -ClientPath $ClientPath
-   $Config | Run-ALTestInContainer -XUnitResultFileName $ResultsXMLPath -AzureDevOps "error"
+   $Config | Run-ALTestInContainer -XUnitResultFileName $ResultXMLPath -AzureDevOps "error"
    [XML]$ResultsXML = Get-Content -Path $ResultXMLPath
    $FailCounter = 0
    $Failed = $ResultsXML.assemblies.assembly.failed

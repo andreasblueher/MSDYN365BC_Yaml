@@ -43,7 +43,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Password" -Value $env:UserPwd
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Auth" -Value $env:Auth
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "RepoPath" -Value $env:BUILD_REPOSITORY_LOCALPATH
-   Add-Member -InputObject $Config -MemberType Noteproperty -Name "RAM" -Value "8GB"
+   Add-Member -InputObject $Config -MemberType Noteproperty -Name "RAM" -Value "4GB"
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "optionalParameters" -Value $optionalParameters
    #Switch true for automatic Build in Azure DevOps and false for interactive build
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Build" -Value $true

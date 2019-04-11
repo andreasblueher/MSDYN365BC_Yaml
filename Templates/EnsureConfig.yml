@@ -67,9 +67,13 @@ steps:
 
     $AppJson = Get-Content -Path $File.FullName | ConvertFrom-Json
     $AppJson | Add-Member -MemberType NoteProperty -Name "AppPath" -Value $File.FullName
-    if ($File.Fullname -like "*\helpers\*")
+    if ($File.Fullname -like "*\helpers\RegisterTestCodeUnits\*")
     {
       $Config.HelperApps += $AppJson
+    }
+    elseif ($File.Fullname -like "*\helpers\*")
+    {
+      continue
     }
     else
     {

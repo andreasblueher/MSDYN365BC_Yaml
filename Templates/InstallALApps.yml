@@ -30,6 +30,8 @@ steps:
      $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $Apps) -PackagesPath $Config.RepoPath -SkipVerification 'true'
      $Config | Publish-ALAppTree -OrderedApps (Get-ALAppOrder -AppCollection $HelperApps) -PackagesPath $Config.RepoPath -SkipVerification 'true'
    }
+   Write-Host "Waiting for 120 seconds"
+   Start-Sleep -Seconds 120
 
   displayName: 'Install AL Apps'
   env:

@@ -37,7 +37,7 @@ steps:
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ContainerName" -Value $env:ContainerName
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "ImageName" -Value $env:ImageName
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "LicenseFile" -Value $env:LicenseFile
-   Add-Member -InputObject $Config -MemberType Noteproperty -Name "CertFile" -Value $TmpFile
+   #Add-Member -InputObject $Config -MemberType Noteproperty -Name "CertFile" -Value $TmpFile
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "CertPwd" -Value $env:CertPwd
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Username" -Value $env:Username
    Add-Member -InputObject $Config -MemberType Noteproperty -Name "Password" -Value $env:UserPwd

@@ -12,10 +12,10 @@ steps:
 
    #[Version]$version = ($Config.AllApps.version | Sort-Object -Descending)[0]
 
-   #$NewVersion = "$($version.Major).$($version.Minor).(Get-Date -Format yyyyMMdd).$($env:BUILD_BUILDID)"
+   #$NewVersion = "$($version.Major).$($version.Minor).$($env:BUILD_BUILDID).0"
 
-   write-host "Updating build pipeline no. to $NewVersion"
-   write-host "##vso[build.updatebuildnumber]$NewVersion"
+   #write-host "Updating build pipeline no. to $NewVersion"
+   #write-host "##vso[build.updatebuildnumber]$NewVersion"
    $Config.AllApps | % {
       $NewVersion = "$($_.version.Major).$($_.version.Minor).(Get-Date -Format yyyyMMdd).$($env:BUILD_BUILDID)"
       $AppSetup = Get-Content -Path $_.AppPath -Encoding UTF8 | ConvertFrom-Json

@@ -10,13 +10,14 @@ steps:
 
    $Config = Get-Content (-join($env:ConfigFolder,"\config.json")) | ConvertFrom-JSON
 
-   [Version]$version = ($Config.AllApps.version | Sort-Object -Descending)[0]
+   #[Version]$version = ($Config.AllApps.version | Sort-Object -Descending)[0]
 
-   $NewVersion = "$($version.Major).$($version.Minor).$($env:BUILD_BUILDID).0"
+   #$NewVersion = "$($version.Major).$($version.Minor).(Get-Date -Format yyyyMMdd).$($env:BUILD_BUILDID)"
 
    write-host "Updating build pipeline no. to $NewVersion"
    write-host "##vso[build.updatebuildnumber]$NewVersion"
    $Config.AllApps | % {
+      $NewVersion = "$($_.version.Major).$($_.version.Minor).(Get-Date -Format yyyyMMdd).$($env:BUILD_BUILDID)"
       $AppSetup = Get-Content -Path $_.AppPath -Encoding UTF8 | ConvertFrom-Json
       $AppSetup.version = $NewVersion
       $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_.AppPath -Encoding UTF8

@@ -17,7 +17,8 @@ steps:
    #write-host "Updating build pipeline no. to $NewVersion"
    #write-host "##vso[build.updatebuildnumber]$NewVersion"
    $Config.AllApps | % {
-      $NewVersion = "$($_.version.Major).$($_.version.Minor).$($Date).$($env:BUILD_BUILDID)"
+      $AppVersion = $_.version
+      $NewVersion = "$($AppVersion.Major).$($AppVersion.Minor).$($Date).$($env:BUILD_BUILDID)"
       $AppSetup = Get-Content -Path $_.AppPath -Encoding UTF8 | ConvertFrom-Json
       $AppSetup.version = $NewVersion
       $AppSetup | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $_.AppPath -Encoding UTF8
